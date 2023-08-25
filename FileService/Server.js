@@ -3,17 +3,31 @@ const protoLoader = require('@grpc/proto-loader');
 const path = require('path');
 const fs = require('fs');
 
-const PROTO_PATH = path.resolve(__dirname, '../proto/SearchFiles.proto'); 
+const PROTO_PATH = path.resolve(__dirname, '../proto/FileService.proto');
 const packageDefinition = protoLoader.loadSync(PROTO_PATH);
-const fileServiceProto = grpc.loadPackageDefinition(packageDefinition);
+const combinedProto = grpc.loadPackageDefinition(packageDefinition);
 
 const DIRECTORY_PATH = path.join(__dirname, '../Files');
-const HOST = 'localhost:50001';
+const HOST = 'localhost:50000';
 
 const server = new grpc.Server();
 
-const searchFiles = (call, callback) => {
+// Implementation for ListFiles service
+const listFiles = (call, callback) => {
+    fs.readdir(DIRECTORY_PATH, (err, files) => {
+        if (err) {
+            callback({
+                code: grpc.status.INTERNAL,
+                details: "Error reading directory"
+            });
+            return;
+        }
+        callback(null, { filenames: files });
+    });
+};
 
+// Implementation for SearchFiles service
+const searchFiles = (call, callback) => {
     fs.readdir(DIRECTORY_PATH, (err, files) => {
         const Name = call.request.name;
         if (err) {
@@ -29,7 +43,12 @@ const searchFiles = (call, callback) => {
     });
 };
 
-server.addService(fileServiceProto.FileService.service, { SearchFiles: searchFiles });
+// Add both services to the server
+server.addService(combinedProto.FileService.service, { 
+    ListFiles: listFiles,
+    SearchFiles: searchFiles 
+});
+
 server.bindAsync(HOST, grpc.ServerCredentials.createInsecure(), () => {
     server.start();
     console.log(`Listening on port ${HOST}`);
