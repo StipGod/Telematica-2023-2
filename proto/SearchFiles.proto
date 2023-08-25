@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+service FileService {
+    rpc SearchFiles (SearchFilesRequest) returns (SearchFilesResponse);
+}
+
+message SearchFilesRequest {
+    string name = 1;
+}
+
+message SearchFilesResponse {
+    repeated string searchResponse = 1;
+}
