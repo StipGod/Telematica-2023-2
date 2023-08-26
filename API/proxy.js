@@ -52,7 +52,7 @@ app.get('/search', (req, res) => {
     serviceClient.SearchFiles({ name: req.query.name }, (error, response) => {
         if (error) {
             console.error('Error calling the Search gRPC service', error);
-            sendToQueue('Search/',req.query.name);
+            sendToQueue('Search/' + req.query.name);
             res.status(500).send('Error calling microservice');
             return;
         }
