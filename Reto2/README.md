@@ -3,17 +3,29 @@
 Resumen de Servicios
 
 Listar Archivos: Lista todos los archivos en el directorio especificado.
+
 Buscar Archivos: Busca archivos en el directorio basándose en un patrón dado.
-Instancias
+
+Instancias:
+
 API Gateway: 54.226.83.96
+
 En esta instancia de sebera correr el codigo proxy.js
+
 sudo node proxy.js
+
 Servicio gRPC: 107.21.98.242
+
 En esta instancia deberia de correr el codigo Server.js
+
 sudo node Server.js
+
 RabbitMQ (MOM): 44.214.98.62
+
 En esta instancia se debe de levantar el contenedor y correr el codigo para desencolar los mensajes y traducirlos.
+
 sudo docker start rabbit-server
+
 python3 consumerQueue.py
 
 Cómo Usar
