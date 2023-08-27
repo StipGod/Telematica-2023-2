@@ -1,4 +1,4 @@
-##Documentación de Reto 2
+Documentación de Reto 2
 
 Resumen de Servicios
 
@@ -29,20 +29,22 @@ sudo docker start rabbit-server
 python3 consumerQueue.py
 
 Cómo Usar
-Listar Archivos
-Para listar todos los archivos, realiza una solicitud GET a:
+
+Listar Archivos:
+
+Para listar todos los archivos, realiza una solicitud a:
 
 http://54.226.83.96/list
 
 Buscar Archivos
+
 Para buscar archivos, realiza una solicitud GET con el patrón de búsqueda deseado como parámetro de consulta:
-
-
 
 http://54.226.83.96/search?name=<PATRON_DE_BUSQUEDA>
 
 Reemplaza <PATRON_DE_BUSQUEDA> con el patrón que deseas buscar.
 
-Manejo de Errores
+Manejo de Errores:
+
 Si el servicio gRPC está inactivo cuando se realiza una solicitud a través del API Gateway, la solicitud será enviada a RabbitMQ. 
 
