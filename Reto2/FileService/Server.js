@@ -2,13 +2,14 @@ const grpc = require('@grpc/grpc-js');
 const protoLoader = require('@grpc/proto-loader');
 const path = require('path');
 const fs = require('fs');
+const fg = require('fast-glob');  // Import the fast-glob package
 
 const PROTO_PATH = path.resolve(__dirname, '../proto/FileService.proto');
 const packageDefinition = protoLoader.loadSync(PROTO_PATH);
 const combinedProto = grpc.loadPackageDefinition(packageDefinition);
 
 const DIRECTORY_PATH = path.join(__dirname, '../Files');
-const HOST = 'localhost:50000';
+const HOST = '0.0.0.0:50051';
 
 const server = new grpc.Server();
 
@@ -26,27 +27,27 @@ const listFiles = (call, callback) => {
     });
 };
 
-// Implementation for SearchFiles service
+// Implementation for SearchFiles service using fast-glob
 const searchFiles = (call, callback) => {
-    fs.readdir(DIRECTORY_PATH, (err, files) => {
-        const Name = call.request.name;
-        if (err) {
+    const Name = call.request.name;
+    fg(`${DIRECTORY_PATH}/${Name}*`)  // Use fast-glob to search for files
+        .then(matchingFiles => {
+            // Extract just the file names from the full paths
+            const fileNames = matchingFiles.map(filePath => path.basename(filePath));
+            callback(null, { searchResponse: fileNames });
+        })
+        .catch(err => {
             callback({
                 code: grpc.status.INTERNAL,
                 details: "Error reading directory"
             });
-            return;
-        }
-
-        const matchingFiles = files.filter(file => file.startsWith(Name));
-        callback(null, { searchResponse: matchingFiles });
-    });
+        });
 };
 
 // Add both services to the server
-server.addService(combinedProto.FileService.service, { 
+server.addService(combinedProto.FileService.service, {
     ListFiles: listFiles,
-    SearchFiles: searchFiles 
+    SearchFiles: searchFiles
 });
 
 server.bindAsync(HOST, grpc.ServerCredentials.createInsecure(), () => {

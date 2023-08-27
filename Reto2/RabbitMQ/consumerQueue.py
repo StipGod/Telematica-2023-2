@@ -25,7 +25,8 @@ def callback(ch, method, properties, body):
     if message == "List":
         list_service()
     elif message.startswith("Search/"):
-        pattern = message.split("Search/")[1]  
+        pattern = message.split("Search/")[1]
+        print(message)
         search_service(pattern)
 
 channel.basic_consume(queue="my_app", on_message_callback=callback, auto_ack=True)

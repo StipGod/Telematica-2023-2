@@ -11,10 +11,10 @@ const serviceProtoPATH = path.resolve(__dirname, '../proto/FileService.proto');
 const serviceServicePORT = 50051;
 const servicePackageDefinition = protoLoader.loadSync(serviceProtoPATH);
 const serviceService = grpc.loadPackageDefinition(servicePackageDefinition).FileService;
-const serviceClient = new serviceService(`127.0.0.1:${serviceServicePORT}`, grpc.credentials.createInsecure());
+const serviceClient = new serviceService(`107.21.98.242:${serviceServicePORT}`, grpc.credentials.createInsecure());
 
 function sendToQueue(msg) {
-    amqp.connect('amqp://user:password@172.17.0.2', (error0, connection) => {
+    amqp.connect('amqp://user:password@44.214.98.62', (error0, connection) => {
         if (error0) {
             console.error("Failed to connect to RabbitMQ", error0);
             return;
@@ -40,7 +40,7 @@ app.get('/list', (req, res) => {
         if (error) {
             console.error('Error calling the List gRPC service', error);
             sendToQueue("List");
-            res.status(500).send('Error calling microservice');
+            res.status(500).send('Error calling microservice, queued to RabbitMQ');
             return;
         }
         res.json(response.filenames);
@@ -52,8 +52,10 @@ app.get('/search', (req, res) => {
     serviceClient.SearchFiles({ name: req.query.name }, (error, response) => {
         if (error) {
             console.error('Error calling the Search gRPC service', error);
-            sendToQueue('Search/' + req.query.name);
-            res.status(500).send('Error calling microservice');
+            let message = 'Search/' + req.query.name;
+            console.log(message);
+            sendToQueue(message);
+            res.status(500).send('Error calling microservice, queued to RabbitMQ');
             return;
         }
         res.json(response.searchResponse);
