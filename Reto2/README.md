@@ -1,6 +1,7 @@
-Documentación de Reto 2
+##Documentación de Reto 2
 
 Resumen de Servicios
+
 Listar Archivos: Lista todos los archivos en el directorio especificado.
 Buscar Archivos: Busca archivos en el directorio basándose en un patrón dado.
 Instancias
