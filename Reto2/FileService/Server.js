@@ -2,7 +2,7 @@ const grpc = require('@grpc/grpc-js');
 const protoLoader = require('@grpc/proto-loader');
 const path = require('path');
 const fs = require('fs');
-const fg = require('fast-glob');  // Import the fast-glob package
+const fg = require('fast-glob');
 
 const PROTO_PATH = path.resolve(__dirname, '../proto/FileService.proto');
 const packageDefinition = protoLoader.loadSync(PROTO_PATH);
@@ -27,12 +27,12 @@ const listFiles = (call, callback) => {
     });
 };
 
-// Implementation for SearchFiles service using fast-glob
+// Implementation for SearchFiles service
+
 const searchFiles = (call, callback) => {
     const Name = call.request.name;
-    fg(`${DIRECTORY_PATH}/${Name}*`)  // Use fast-glob to search for files
+    fg(`${DIRECTORY_PATH}/${Name}*`) 
         .then(matchingFiles => {
-            // Extract just the file names from the full paths
             const fileNames = matchingFiles.map(filePath => path.basename(filePath));
             callback(null, { searchResponse: fileNames });
         })

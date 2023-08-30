@@ -16,9 +16,9 @@
 
 ## 1.2. Tener las 2 colas en MOM, una con el mensaje y la segunda con el identificador de el enviador.
 
-# 2. Se tienen 3 instancias. El API gateway, el cual es el que se encarga de comunicarse con el servidor gRPC y en caso de fallo mandar a la cola al servidor mom. El servidor gRPC, el cual tiene el codigo de ambos microservicios y esta constantemente escucnado en el puerto 50051. Y por ultimo esta el servidor MOM, el cual tiene el contenedor de docker en donde se encolan los mensajes, y el consumer queue, el cual los desencola.
+# 2. Se tienen 3 instancias. El API gateway, el cual es el que se encarga de comunicarse con el servidor gRPC y en caso de fallo mandar a la cola al servidor mom. El servidor gRPC, el cual tiene el codigo de ambos microservicios y esta constantemente escucnado en el puerto 50051. Y por ultimo esta el servidor MOM, el cual tiene el contenedor de docker en donde se encolan los mensajes, y el consumer queue, el cual los desencola mandando un email.
 
-# 3. La mayoria de el proyecto esta en node.js. Para el codigo de el API utilize js, con la libreria express. En el server gRPC utilize js, con la libreria gRPC, fast-glob y proto loader. Y para el MOM utilize docker para crear un contenedor de RabbitMQ. Para el consumer queue, utilize python con pika y glob.
+# 3. La mayoria de el proyecto esta en node.js. Para el codigo de el API utilize js, con la libreria express. En el server gRPC utilize js, con la libreria gRPC, fast-glob y proto loader. Y para el MOM utilize docker para crear un contenedor de RabbitMQ. Para el consumer queue, utilize python con pika, glob y sendgrid.
 
 # Resumen de Servicios
 
@@ -54,15 +54,17 @@
 
 ## Para listar todos los archivos, realiza una solicitud a:
 
-## http://54.226.83.96/list
+## http://54.226.83.96/list?email=<EMAIL>
 
 # Buscar Archivos
 
 ## Para buscar archivos, realiza una solicitud GET con el patrón de búsqueda deseado como parámetro de consulta:
 
-## http://54.226.83.96/search?name=<PATRON_DE_BUSQUEDA>
+## http://54.226.83.96/search?name=<PATRON_DE_BUSQUEDA>&email=<EMAIL>
 
 ## Reemplaza <PATRON_DE_BUSQUEDA> con el patrón que deseas buscar.
+
+## Remplaza <EMAIL> con el email a mandar si gRPC no esta disponible
 
 # Manejo de Errores:
 
@@ -78,13 +80,15 @@
 
 ## Installar node y usar npm i para installar todas las dependencias del projecto
 
-## Instalar python y pika
+## Instalar python, pika, 
 
 ## Installar docker y crear el contenedor
 
 ## Crear una cola my_app y un exchange my_exchange en RabbitMQ, bindearlos
 
 ## Cambiar las ips de los codigos a las ips de tu maquina
+
+## Crear cuenta de sendgrid y generar un API key y un sender verificado
 
 ## Correr los codigos como fue descrito anteriormente
 
@@ -94,6 +98,7 @@
 ![Alt text](Snapshots/tel4.PNG) 
 ![Alt text](Snapshots/tel5.PNG) 
 ![Alt text](Snapshots/tel6.PNG)
+![Alt text](Snapshots/tel7.PNG)
 
 # referencias:
 <debemos siempre reconocer los créditos de partes del código que reutilizaremos, así como referencias a youtube, o referencias bibliográficas utilizadas para desarrollar el proyecto o la actividad>

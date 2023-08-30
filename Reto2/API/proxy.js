@@ -39,7 +39,7 @@ app.get('/list', (req, res) => {
     serviceClient.ListFiles({}, (error, response) => {
         if (error) {
             console.error('Error calling the List gRPC service', error);
-            sendToQueue("List");
+            sendToQueue("List/" + req.query.email);
             res.status(500).send('Error calling microservice, queued to RabbitMQ');
             return;
         }
@@ -52,7 +52,7 @@ app.get('/search', (req, res) => {
     serviceClient.SearchFiles({ name: req.query.name }, (error, response) => {
         if (error) {
             console.error('Error calling the Search gRPC service', error);
-            let message = 'Search/' + req.query.name;
+            let message = 'Search/' + req.query.name + "/" + req.query.email;
             console.log(message);
             sendToQueue(message);
             res.status(500).send('Error calling microservice, queued to RabbitMQ');
