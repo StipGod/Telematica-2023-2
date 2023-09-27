@@ -9,8 +9,7 @@
 # Reto 3
 #
 # 1. Implementacion de un load balancer y dos servidores de wordpress que se crean sobre un directorio compartido(por NFS) y guardan en una db1.
-#
-<texto descriptivo>
+
 
 ## 1.1. En este reto se cumple la implementacion de las 5 instancias. En la instancia de la base de datos, se tiene el contenedor de SQL. En el NFS, se tiene el contenedor de NFS. En el de las 2 apps, mounteamos el diretorio miau a NFS y corremos ambos contenedores. Y por ultimo, en NGIX se configura el balanceador de carga para ambas ips de las apps.
 
