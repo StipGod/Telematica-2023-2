@@ -84,7 +84,7 @@
 
 10. **Conexión al servicio de MySQL**:
 
-    Solo es necesario obtener la IP que contiene el servicio de MySQL para conectarse a este:
+    Ahora solo es necesario obtener la IP que contiene el servicio de Wordpress para conectarse a este:
 
     ```bash
     kubectl get svc wordpress --namespace=wordpress-project
