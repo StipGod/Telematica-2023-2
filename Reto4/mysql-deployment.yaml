@@ -2,12 +2,12 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mysql
+  namespace: wordpress-project
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: mysql
-  strategy:
-    type: Recreate
   template:
     metadata:
       labels:
@@ -18,7 +18,9 @@ spec:
         name: mysql
         env:
         - name: MYSQL_ROOT_PASSWORD
-          value: "holaquemas"  
+          value: "holaquemas"
+        - name: MYSQL_DATABASE
+          value: "wordpress"
         ports:
         - containerPort: 3306
           name: mysql
@@ -28,4 +30,4 @@ spec:
       volumes:
       - name: mysql-persistent-storage
         persistentVolumeClaim:
-          claimName: mysql-pv-claim
+          claimName: mysql-pvc

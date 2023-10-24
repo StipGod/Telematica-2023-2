@@ -1,14 +1,13 @@
-# wordpress-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: wordpress
+  namespace: wordpress-project
 spec:
+  replicas: 3
   selector:
     matchLabels:
       app: wordpress
-  strategy:
-    type: Recreate
   template:
     metadata:
       labels:
@@ -19,16 +18,11 @@ spec:
         name: wordpress
         env:
         - name: WORDPRESS_DB_HOST
-          value: mysql
+          value: "mysql:3306"
+        - name: WORDPRESS_DB_USER
+          value: "root"
         - name: WORDPRESS_DB_PASSWORD
-          value: "holaquemas"  
+          value: "holaquemas"
         ports:
         - containerPort: 80
           name: wordpress
-        volumeMounts:
-        - name: wordpress-persistent-storage
-          mountPath: /var/www/html
-      volumes:
-      - name: wordpress-persistent-storage
-        persistentVolumeClaim:
-          claimName: wordpress-pv-claim
