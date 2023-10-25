@@ -3,6 +3,11 @@
 1. Uno de persistencia de datos con MySQL.
 2. Otro con un servidor de WordPress.
 
+## Integrantes
+1. Esteban Bernal
+2. Juan Camilo Salazar
+3. Tomas Calle
+
 ## Instrucciones para replicar el proyecto
 
 1. **Crear 3 instancias en GCP o en otro proveedor cloud.**
