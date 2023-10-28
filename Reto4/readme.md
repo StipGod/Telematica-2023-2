@@ -3,11 +3,6 @@
 1. Uno de persistencia de datos con MySQL.
 2. Otro con un servidor de WordPress.
 
-## Integrantes
-1. Esteban Bernal
-2. Juan Camilo Salazar
-3. Tomas Calle
-
 ## Instrucciones para replicar el proyecto
 
 1. **Crear 3 instancias en GCP o en otro proveedor cloud.**
@@ -81,16 +76,24 @@
 
 9. **Exponer el servicio de WordPress**:
 
-   Exponga el servicio de WordPress y active `nodePort` para que este servicio sea accesible desde fuera del clúster:
+   Exponga el servicio de WordPress.
 
     ```bash
-    kubectl expose deployment wordpress --type=NodePort --port=3306 --namespace=wordpress-project
+    kubectl expose deployment wordpress --port=80 --namespace=wordpress-project
     ```
 
-10. **Conexión al servicio de MySQL**:
+10. **Configure ingress**:
 
-    Ahora solo es necesario obtener la IP que contiene el servicio de Wordpress para conectarse a este:
+    Ingress se encargará de exponer el servicio de wordpress al mundo. Es decir esta servicio ya será accesible desde fuera del cluster
 
     ```bash
-    kubectl get svc wordpress --namespace=wordpress-project
+    kubectl apply -f wordpress-ingress.yaml
+    ```
+
+10. **Conexión al servicio de Wordpress desde afuera**:
+
+    Solo es necesario obtener la IP bajo `ADDRESS` para conectarse al servicio de Wordpress:
+
+    ```bash
+    kubectl get ingress
     ```
